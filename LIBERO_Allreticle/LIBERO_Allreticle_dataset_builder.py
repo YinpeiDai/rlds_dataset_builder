@@ -7,9 +7,10 @@ import numpy as np
 import tensorflow as tf
 import tensorflow_datasets as tfds
 import sys
-from LIBERO_10.conversion_utils import MultiThreadedDatasetBuilder
+from LIBERO_Allreticle.conversion_utils import MultiThreadedDatasetBuilder
 
-DIR = "/home/daiyp/openvla/data_regenerated_hdf5_libero/large_crosshair_dynamic_default_color/libero_10"
+DIR = "/home/daiyp/openvla/data_regenerated_hdf5_libero/large_crosshair_dynamic_default_color/libero_*"
+hdf5_matching_files = glob.glob(f"{DIR}/*.hdf5")
 
 def _generate_examples(paths) -> Iterator[Tuple[str, Any]]:
     """Yields episodes for list of data paths."""
@@ -83,7 +84,7 @@ def _generate_examples(paths) -> Iterator[Tuple[str, Any]]:
             yield ret
 
 
-class LIBERO10(MultiThreadedDatasetBuilder):
+class LIBEROAllreticle(MultiThreadedDatasetBuilder):
     """DatasetBuilder for example dataset."""
 
     VERSION = tfds.core.Version('1.0.0')
@@ -164,5 +165,5 @@ class LIBERO10(MultiThreadedDatasetBuilder):
     def _split_paths(self):
         """Define filepaths for data splits."""
         return {
-            "train": glob.glob(f"{DIR}/*.hdf5"),
+            "train": hdf5_matching_files,
         }

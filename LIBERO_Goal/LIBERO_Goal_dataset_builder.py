@@ -9,6 +9,7 @@ import tensorflow_datasets as tfds
 import sys
 from LIBERO_Goal.conversion_utils import MultiThreadedDatasetBuilder
 
+DIR = "/home/daiyp/openvla/data_regenerated_hdf5_libero/large_crosshair_dynamic_default_color/libero_goal"
 
 def _generate_examples(paths) -> Iterator[Tuple[str, Any]]:
     """Yields episodes for list of data paths."""
@@ -43,8 +44,8 @@ def _generate_examples(paths) -> Iterator[Tuple[str, Any]]:
         for i in range(actions.shape[0]):
             episode.append({
                 'observation': {
-                    'image': images[i][::-1,::-1],
-                    'wrist_image': wrist_images[i][::-1,::-1],
+                    'image': images[i],
+                    'wrist_image': wrist_images[i],
                     'state': np.asarray(np.concatenate((states[i], gripper_states[i]), axis=-1), np.float32),
                     'joint_state': np.asarray(joint_states[i], dtype=np.float32),
                 },
@@ -163,5 +164,5 @@ class LIBEROGoal(MultiThreadedDatasetBuilder):
     def _split_paths(self):
         """Define filepaths for data splits."""
         return {
-            "train": glob.glob("/PATH/TO/LIBERO/libero/datasets/libero_goal_no_noops/*.hdf5"),
+            "train": glob.glob(f"{DIR}/*.hdf5"),
         }
